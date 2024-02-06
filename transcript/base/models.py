@@ -30,10 +30,10 @@ class Staff(models.Model):
     
 class HeadOfDepartment(models.Model):
     department = models.OneToOneField(Department, on_delete=models.CASCADE)
-    staff = models.ForeignKey(Staff, on_delete=models.CASCADE)
+    staff = models.OneToOneField(Staff, on_delete=models.CASCADE)
 
     def __str__(self):
-        return f"Head of {self.department} - {self.staff}"
+        return f"Head of {self.department} is {self.staff}"
 
 class Course(models.Model):
     name = models.CharField(max_length=50)

@@ -177,12 +177,27 @@
                         <td><b>AWARD TITLE:</b></td>
                         <td colspan="3" id="bold">BACHELOR OF ENGINEERING IN {{ student.course | upper }}</td>
                     </tr>
-
+                    
+                    
+     
                     <tr>
                         <td><b>CLASSIFICATION OF AWARD:</b></td>
+                        {% if overall_gpa >= 4.5 and overall_gpa <= 5.0  %}
+                        <td colspan="3">UPPER FIRST CLASS</td>
+                        {% elif overall_gpa >= 4.0 and overall_gpa < 4.5  %}
                         <td colspan="3">LOWER FIRST CLASS</td>
+                        {% elif overall_gpa >= 3.5 and overall_gpa < 4.0  %}
+                        <td colspan="3">UPPER SECOND CLASS</td>
+                        {% elif overall_gpa >= 3.0 and overall_gpa < 3.5  %}
+                        <td colspan="3">LOWER SECOND CLASS</td>
+                        {% elif overall_gpa >= 2.5 and overall_gpa < 3.0  %}
+                        <td colspan="3">UPPER THIRD CLASS</td>
+                        {% elif overall_gpa >= 2.0 and overall_gpa < 2.5  %}
+                        <td colspan="3">LOWER THIRD CLASS</td>
+                        {% else %}
+                        <td colspan="3">FAIL</td>
+                        {% endif %}
                     </tr>
-
                     <tr>
                         <td><b>OVERALL GPA:</b></td>
                         <td colspan="3"> <p>{{ overall_gpa | floatformat:"4" }}</p> </td>
