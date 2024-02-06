@@ -1,40 +1,258 @@
-<!-- transcript.html -->
 
+{% load static  %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Transcript</title>
-</head>
-<body>
-    <h2>DAR ES SALAAM INSTITUTE OF TECHNOLOGY</h2>
-    <h1>Transcript for {{ student }}</h1>
+    <title>Transcript for {{student}}</title>
+    <style>
+        .container {
+            display: flex;
+            flex-wrap: wrap;
+            padding: 50px 200px;
+            page-break-after:avoid
+        }
+
+
+        .semester-table {
+            flex: 0 0 30%;
+            margin: 10px;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            background-color: #f9f9f9;
+            height: fit-content;
+        }
+
+        .semester-table h2 {
+            margin-top: 0;
+        }
+
+        .semester-table table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .semester-table th, .semester-table td {
+            padding: 3px;
+            border: 1px solid #ddd;
+            text-align: left;
+        }
+
+        .semester-table th {
+            background-color: #f2f2f2;
+        }
+
+        .semester-table tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
+
+        .semester-table tr:hover {
+            background-color: #ddd;
+        }
+
+        /* Page break after cover page */
+        .cover-page {
+            page-break-after: always;
+        }
+        footer{
+            display: none;
+        }
+
+        .heading{
+            display: grid;
+            grid-template-columns: 1fr 10fr 1fr;
+        }
+        .main_heading{
+            text-align: center;
+        }
+
+
+        .details {
+            margin: 10px auto;
+            width: 100%;
+        }
+
+        .details table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .details th, td {
+            padding: 20px;
+            text-align: left;
+        }
+
+        .details td:first-child {
+            font-weight: bold;
+            width: 30%;
+        }
+
+        .details td[colspan="3"] {
+            font-weight: bold;
+        }
+
+   
+
+        @media print{
+            .container{
+                padding: 5px;
+                display: grid;
+                grid-template-columns: repeat(3, 1fr);
+                gap: 2px;
+                margin: 0px;
+                font-size: 10px;
+            }
+            footer{
+                display: block;
+            }
+            .noprint {
+                display: none;
+            }
+
+            @page {
+                margin: 0;
+            }
+            body {
+                margin: 2cm;
+                
+            }
+            table{
+                width: 100%;
+                height: fit-content;
     
-    <h2>Semester-wise Results:</h2>
-    <table border="1">
-        <thead>
-            <tr>
-                <th>Semester</th>
-                <th>Module</th>
-                <th>Grade</th>
-            </tr>
-        </thead>
-        <tbody>
-            {% for semester, data in semesters.items %}
-                {% for result in data.results %}
+            }
+            td colspan{
+
+            }
+
+        }
+    </style>
+</head>
+<body>       
+        <div class="cover-page">
+            <div class="heading">
+                <div class="org_img">
+                    <img src="{% static 'images/logo.png' %}" alt="" height="100px">
+                </div>
+
+                <div class="main_heading">
+                    <h2>DAR ES SALAAM INSTITUTE OF TECHNLOGY</h2>
+                    <h2>ACADEMIC TRANSCRIPT</h2>
+                </div>
+
+                <div class="stu_img">
+                    <img src="{% static 'images/miraji_.jpeg' %}" alt="" height="100px">
+                </div>
+
+            </div>
+            
+            <div class="details">
+                <!--First row-->
+                <table>
                     <tr>
-                        {% if forloop.first %}
-                            <td rowspan="{{ data.results|length }}">{{ semester }} - GPA: {{ data.gpa }}</td>
-                        {% endif %}
+                        <th>FULLNAME</th>
+                        <th>BIRTHDATE</th>
+                        <th>GENDER</th>
+                        <th>REGISTRATION NUMBER</th>
+                    </tr>
+
+                    <tr>
+                        <td id="bold">{{ student }}</td>
+                        <td>{{ student.date_of_birth |upper  }}</td>
+                        <td>{{ student.gender | upper}}</td>
+                        <td>{{ student.registration_number | upper}}</td>
+                    </tr>
+
+                    <tr>
+                        <td><b>DATE OF ADMINSSION:</b></td>
+                        <td>OCTOBER , 2021</td>
+                        <td>DATE OF GRADUATION:</td>
+                        <td>DECEMBER, 2025</td>
+                    </tr>
+
+                    <tr>
+                        <td><b>AWARD TITLE:</b></td>
+                        <td colspan="3" id="bold">BACHELOR OF ENGINEERING IN {{ student.course | upper }}</td>
+                    </tr>
+
+                    <tr>
+                        <td><b>CLASSIFICATION OF AWARD:</b></td>
+                        <td colspan="3">LOWER FIRST CLASS</td>
+                    </tr>
+
+                    <tr>
+                        <td><b>OVERALL GPA:</b></td>
+                        <td colspan="3"> <p>{{ overall_gpa | floatformat:"4" }}</p> </td>
+                    </tr>
+
+                </table>
+
+
+            </div>
+            
+
+           
+        </div>
+
+<p></p>
+    <div class="container">
+        {% for semester, data in semesters.items %}
+        <div class="semester-table">
+            <h2>Semister {{ forloop.counter }} </h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Module</th>
+                        <th>Grade</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for result in data.results %}
+                    <tr>
                         <td>{{ result.module }}</td>
                         <td>{{ result.calculate_grade }}</td>
                     </tr>
-                {% endfor %}
-            {% endfor %}
-        </tbody>
-    </table>
+                    {% endfor %}
+                </tbody>
+
+                <tr>
+                    <td colspan="2"><b> GPA: {{ data.gpa|floatformat:"4" }}</b></td>
+                </tr>
+            </table>
+        </div>
+        {% endfor %}
+    </div>
     
-    <h2>Overall GPA: {{ overall_gpa }}</h2>
+    
+    <footer>
+        <p><b>
+            Grade Level: <br>
+            A= Exclelent, B+=very good, B= Good, C+=Satistifactory, D=Poor, E= Fail
+        </b></p>
+
+        <table style="text-align: left;" >
+            <tr>
+                <th>_________________________</th>
+                <th>_________________________</th>
+                <th>_______________________</th>
+            </tr>
+            <tr>
+                <td>Head of Department <br> Dr. Haji Fimbombaya</td>
+                <td >ROY R. ELINEEMA <br>Register</td>
+                <td>Date</td>
+            </tr>
+        </table>
+
+    </footer>
+    <div class="noprint">
+        <button onclick="window.print()">Print</button>
+    </div>
+    
+
 </body>
 </html>
+
+

@@ -60,6 +60,8 @@ class Class(models.Model):
     name = models.CharField(max_length=50)
     course = models.ForeignKey(Course, on_delete=models.CASCADE)
     time = models.CharField(max_length=20, choices=time_)  # 'afternoon' or 'night'
+    created_at = models.DateTimeField(default='2021-10-01')
+    graduated = models.DateTimeField(default='2025-10-01')
 
     def __str__(self):
         return self.name
@@ -88,12 +90,14 @@ class Student(models.Model):
     first_name = models.CharField(max_length=50)
     last_name = models.CharField(max_length=50)
     gender = models.CharField(max_length=15, choices=GENDER)
+    date_of_birth = models.DateField(default='2000-01-01')
     registration_number = models.CharField(max_length=15)
     email = models.EmailField()
     phone = models.CharField(max_length=15)
 
     course = models.ForeignKey(Course, on_delete=models.CASCADE)
     class_enrolled = models.ForeignKey(Class, on_delete=models.CASCADE)
+    
 
     def __str__(self):
         return f"{self.first_name} {self.last_name}"

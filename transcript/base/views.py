@@ -6,10 +6,6 @@ from .models import Student, Result
 def student_list(request):
     students = Student.objects.all()
     return render(request, 'student_list.html', {'students': students})
-# views.py
-
-from django.shortcuts import render
-from .models import Student, Result
 
 def transcript_view(request, student_id):
     student = Student.objects.get(pk=student_id)
@@ -17,29 +13,31 @@ def transcript_view(request, student_id):
 
     # Calculate GPA for each semester
     semesters = {}
+    total_grade_points = 0
+    total_credits = 0
+
     for result in results:
         semester_key = f"Semester {result.semester} - Year {result.year}"
         if semester_key not in semesters:
-            semesters[semester_key] = []
-        semesters[semester_key].append(result)
+            semesters[semester_key] = {
+                'results': [],
+                'gpa': 0
+            }
+        semesters[semester_key]['results'].append(result)
 
-    for semester_key, results in semesters.items():
-        total_grade_points = 0
-        total_credits = 0
-        for result in results:
-            grade_points = get_grade_points(result.calculate_grade())
-            total_grade_points += grade_points
-            # Here we're counting each module equally weighted, assuming no 'credit' attribute
-            total_credits += 1
-        semester_gpa = total_grade_points / len(results)
-        semesters[semester_key] = {
-            'results': results,
-            'gpa': semester_gpa,
-        }
+        # Calculate GPA for the current result and add it to the total
+        grade_points = get_grade_points(result.calculate_grade())
+        total_grade_points += grade_points
+        # Here we're counting each module equally weighted, assuming no 'credit' attribute
+        total_credits += 1
+
+    # Calculate GPA for each semester
+    for semester_data in semesters.values():
+        results = semester_data['results']
+        semester_gpa = sum([get_grade_points(result.calculate_grade()) for result in results]) / len(results)
+        semester_data['gpa'] = semester_gpa
 
     # Calculate overall GPA
-    total_grade_points = sum([get_grade_points(result.calculate_grade()) for result in results])
-    total_credits = len(results)  # Using the number of results for overall GPA calculation
     overall_gpa = total_grade_points / total_credits
 
     context = {
@@ -48,6 +46,7 @@ def transcript_view(request, student_id):
         'overall_gpa': overall_gpa,
     }
     return render(request, 'transcript.html', context)
+
 
 
 def get_grade_points(grade):
