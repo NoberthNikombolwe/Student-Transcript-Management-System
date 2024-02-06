@@ -1,0 +1,40 @@
+<!-- transcript.html -->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Transcript</title>
+</head>
+<body>
+    <h2>DAR ES SALAAM INSTITUTE OF TECHNOLOGY</h2>
+    <h1>Transcript for {{ student }}</h1>
+    
+    <h2>Semester-wise Results:</h2>
+    <table border="1">
+        <thead>
+            <tr>
+                <th>Semester</th>
+                <th>Module</th>
+                <th>Grade</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for semester, data in semesters.items %}
+                {% for result in data.results %}
+                    <tr>
+                        {% if forloop.first %}
+                            <td rowspan="{{ data.results|length }}">{{ semester }} - GPA: {{ data.gpa }}</td>
+                        {% endif %}
+                        <td>{{ result.module }}</td>
+                        <td>{{ result.calculate_grade }}</td>
+                    </tr>
+                {% endfor %}
+            {% endfor %}
+        </tbody>
+    </table>
+    
+    <h2>Overall GPA: {{ overall_gpa }}</h2>
+</body>
+</html>
