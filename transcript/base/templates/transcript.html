@@ -116,7 +116,7 @@
                 margin: 0;
             }
             body {
-                margin: 2cm;
+                margin: 1cm;
                 
             }
             table{
@@ -124,8 +124,19 @@
                 height: fit-content;
     
             }
-            td colspan{
-
+            td, tr {
+                padding: 20px 0;
+            }
+            .cover-page{
+                {% comment %} border: 5px solid black; {% endcomment %}
+                border-radius: 10px;
+                height: 100vh;
+            }
+            .heading{
+                padding-top: 30px;
+            }
+            .headiing_th th, tr{
+                text-align: left;
             }
 
         }
@@ -139,12 +150,21 @@
                 </div>
 
                 <div class="main_heading">
-                    <h2>DAR ES SALAAM INSTITUTE OF TECHNLOGY</h2>
+                    <h2>DAR ES SALAAM INSTITUTE OF TECHNOLOGY</h2>
                     <h2>ACADEMIC TRANSCRIPT</h2>
                 </div>
 
                 <div class="stu_img">
+                    
+                    {% if student.registration_number == '210230222255' %}
                     <img src="{% static 'images/miraji_.jpeg' %}" alt="" height="100px">
+                    {% elif student.registration_number == '210230222253' %}
+                    <img src="{% static 'images/noberth_.png' %}" alt="" height="100px">
+                    {% else %}
+                    <img src="{% static 'images/defaultStudent_.png' %}" alt="" height="100px">
+                    
+                    {% endif %}
+                        
                 </div>
 
             </div>
@@ -152,7 +172,7 @@
             <div class="details">
                 <!--First row-->
                 <table>
-                    <tr>
+                    <tr class="headiing_th">
                         <th>FULLNAME</th>
                         <th>BIRTHDATE</th>
                         <th>GENDER</th>
@@ -201,6 +221,13 @@
                     <tr>
                         <td><b>OVERALL GPA:</b></td>
                         <td colspan="3"> <p>{{ overall_gpa | floatformat:"4" }}</p> </td>
+                    </tr>
+
+                    <tr>
+                        <td colspan="3"></td>
+                        <td style="float: right;">
+                            <img src="{% static 'images/qr-code.png' %}" alt="" height="100px">
+                        </td>
                     </tr>
 
                 </table>

@@ -60,8 +60,8 @@ class Class(models.Model):
     name = models.CharField(max_length=50)
     course = models.ForeignKey(Course, on_delete=models.CASCADE)
     time = models.CharField(max_length=20, choices=time_)  # 'afternoon' or 'night'
-    created_at = models.DateTimeField(default='2021-10-01')
-    graduated = models.DateTimeField(default='2025-10-01')
+    # created_at = models.DateTimeField(default='2021-10-01')
+    # graduated = models.DateTimeField(default='2025-10-01')
 
     def __str__(self):
         return self.name
@@ -115,9 +115,9 @@ class Result(models.Model):
     )
     
     student = models.ForeignKey(Student, on_delete=models.CASCADE)
-    module = models.ForeignKey(Module, on_delete=models.CASCADE)
+    year = models.CharField(max_length=1, choices=year_dur) 
     semester = models.ForeignKey(Semester, on_delete=models.CASCADE)
-    year = models.CharField(max_length=1, choices=year_dur)  # 1, 2, 3, or 4
+    module = models.ForeignKey(Module, on_delete=models.CASCADE)
     ca = models.FloatField()
     fe = models.FloatField()
 
