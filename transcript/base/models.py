@@ -102,20 +102,8 @@ class Student(models.Model):
     def __str__(self):
         return f"{self.first_name} {self.last_name}"
 
-class Result(models.Model):
-    semester_dur = (
-        ('1', '1'),
-        ('2', '2'),
-    )
-    year_dur = (
-        ('1', '1'),
-        ('2', '2'),
-        ('3', '3'),
-        ('4', '4')
-    )
-    
+class Result(models.Model):                                                                                                                                 
     student = models.ForeignKey(Student, on_delete=models.CASCADE)
-    year = models.CharField(max_length=1, choices=year_dur) 
     semester = models.ForeignKey(Semester, on_delete=models.CASCADE)
     module = models.ForeignKey(Module, on_delete=models.CASCADE)
     ca = models.FloatField()
@@ -129,10 +117,8 @@ class Result(models.Model):
         else:
             return 'pass'
             
-
     def calculate_grade(self):
         total_marks = self.ca + self.fe
-
         if total_marks >= 70:
             return 'A'
         elif 60 <= total_marks < 70:
@@ -147,5 +133,14 @@ class Result(models.Model):
             return 'F'
 
     def __str__(self):
-        return f"{self.student} - {self.module} - Semester {self.semester}, Year {self.year}"
+        return f"{self.student} - {self.module} - Semester {self.semester}"
+
+    def save(self, *args, **kwargs):
+        # Check if the selected module belongs to the specified semester
+        if self.semester and self.module:
+            try:
+                ClassModule.objects.get(class_module=self.student.class_enrolled, module=self.module, semester=self.semester)
+            except ClassModule.DoesNotExist:
+                raise ValueError("Selected module is not assigned to the specified semester")
+        super().save(*args, **kwargs)
 

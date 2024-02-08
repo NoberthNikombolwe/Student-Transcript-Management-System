@@ -19,7 +19,7 @@ def transcript_view(request, student_id):
     total_credits = 0
 
     for result in results:
-        semester_key = f"Semester {result.semester} - Year {result.year}"
+        semester_key = f"Semester {result.semester}"
         if semester_key not in semesters:
             semesters[semester_key] = {
                 'results': [],
