@@ -120,6 +120,15 @@ class Result(models.Model):
     module = models.ForeignKey(Module, on_delete=models.CASCADE)
     ca = models.FloatField()
     fe = models.FloatField()
+    
+    def status_module_student(self):
+        if self.ca < 24:
+            return 're-take'
+        elif self.ca >= 16 and self.fe < 16:
+            return 'Supplementary'
+        else:
+            return 'pass'
+            
 
     def calculate_grade(self):
         total_marks = self.ca + self.fe

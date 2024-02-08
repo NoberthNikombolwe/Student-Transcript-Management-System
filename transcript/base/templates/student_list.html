@@ -97,7 +97,10 @@
 
     <ul id="student-list">
         {% for student in students %}
-            <li><a href="{% url 'transcript' student.id %}">{{ student.first_name }} {{ student.last_name }}</a></li>
+            <li><a href="{% url 'transcript' student.id %}">{{ student.first_name }} {{ student.last_name }}</a>
+                <a href="{% url 'transcript' student.id %}">Transcript</a>
+                <a href="{% url 'transcript' student.id %}">Result</a>
+            </li>
         {% endfor %}
     </ul>
 

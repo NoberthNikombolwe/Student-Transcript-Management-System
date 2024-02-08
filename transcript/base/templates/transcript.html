@@ -249,6 +249,7 @@
                     <tr>
                         <th>Module</th>
                         <th>Grade</th>
+                        <th>Status</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -256,12 +257,13 @@
                     <tr>
                         <td>{{ result.module }}</td>
                         <td>{{ result.calculate_grade }}</td>
+                        <td>{{ result.status_module_student }}</td>
                     </tr>
                     {% endfor %}
                 </tbody>
 
                 <tr>
-                    <td colspan="2"><b> GPA: {{ data.gpa|floatformat:"4" }}</b></td>
+                    <td colspan="3"><b> GPA: {{ data.gpa|floatformat:"4" }}</b></td>
                 </tr>
             </table>
         </div>

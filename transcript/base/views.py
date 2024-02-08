@@ -2,6 +2,7 @@
 
 from django.shortcuts import render, get_object_or_404
 from .models import Student, Result
+from django.contrib.auth.decorators import login_required
 
 def student_list(request):
     students = Student.objects.all()
